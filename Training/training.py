@@ -83,10 +83,10 @@ seasonFortuna = [
 # la lista del porcentaje de la temporada
 places = []
 places.append(Place("SanJose-Tamarindo", 0.2856, 5500, seasonTamarindo))
-# places.append(Place('SanJose-Liberia', 0.1431, 3500, seasonLiberia))
-# places.append(Place('Tamarindo-San Jose', 0.2856, 4750, seasonSanJose))
-# places.append(Place('SanJose-Monteverde', 0.1429, 4500, seasonMonteverde))
-# places.append(Place('SanJose-Fortuna', 0.1429, 6000, seasonFortuna))
+places.append(Place('SanJose-Liberia', 0.1431, 3500, seasonLiberia))
+places.append(Place('Tamarindo-San Jose', 0.2856, 4750, seasonSanJose))
+places.append(Place('SanJose-Monteverde', 0.1429, 4500, seasonMonteverde))
+places.append(Place('SanJose-Fortuna', 0.1429, 6000, seasonFortuna))
 
 # Saca el porcentaje de ganancia que hubo en cada calculo
 def profitPerTotal(pPriceCost, pPrice):
@@ -102,7 +102,7 @@ def training(
     # Se le aplica el porcentaje que se quiere de ganancia fija
     price = pPriceCost * (1 + pProfitPercentage)
     # Se le aplica el porcentaje de aumento segun la temporada y la zona
-    price = math.ceil(price * ((1 + pSeasonPercentage) * (1 + pPlacePercentage)))
+    price = math.ceil(price * ((1 + (pSeasonPercentage+0.3)/2) * (1 + pPlacePercentage)))
 
     # Dependiendo de las condiciones determina el peso
     # de la cantidad de dias y cantidad de asientos comprados
@@ -189,11 +189,14 @@ def sacarRegresionLineal():
 
     return listaFormulas
 
+
+# Se generan las formulas para las rutas
+listaFormulas = sacarRegresionLineal()
+
 # Calcula el precio de un asiento dependiendo de las situacion
 # aplicando la formula de la ruta en especifico
 def calcularPrecio(asientos, dias, temporada, ruta):
-    listaFormulas = sacarRegresionLineal()
-
+    global listaFormulas
     # Le aplica la formula de la ruta respectiva
     for formula in listaFormulas:
         if formula.ruta == ruta:
@@ -203,8 +206,8 @@ def calcularPrecio(asientos, dias, temporada, ruta):
                 + temporada * formula.coeficientesA[2]
                 + formula.coeficienteB
             )
-        else:
-            return "No existe esa ruta"
+    # Solo llega aqui si no estaba la ruta en las formulas
+    return "No existe esa ruta"
 
 def generadorSituaciones():
     global places

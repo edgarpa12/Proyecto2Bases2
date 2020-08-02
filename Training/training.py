@@ -83,10 +83,10 @@ seasonFortuna = [
 # la lista del porcentaje de la temporada
 places = []
 places.append(Place("SanJose-Tamarindo", 0.2856, 5500, seasonTamarindo))
-places.append(Place('SanJose-Liberia', 0.1431, 3500, seasonLiberia))
-places.append(Place('Tamarindo-San Jose', 0.2856, 4750, seasonSanJose))
-places.append(Place('SanJose-Monteverde', 0.1429, 4500, seasonMonteverde))
-places.append(Place('SanJose-Fortuna', 0.1429, 6000, seasonFortuna))
+# places.append(Place('SanJose-Liberia', 0.1431, 3500, seasonLiberia))
+# places.append(Place('Tamarindo-San Jose', 0.2856, 4750, seasonSanJose))
+# places.append(Place('SanJose-Monteverde', 0.1429, 4500, seasonMonteverde))
+# places.append(Place('SanJose-Fortuna', 0.1429, 6000, seasonFortuna))
 
 # Saca el porcentaje de ganancia que hubo en cada calculo
 def profitPerTotal(pPriceCost, pPrice):
@@ -206,31 +206,26 @@ def calcularPrecio(asientos, dias, temporada, ruta):
         else:
             return "No existe esa ruta"
 
+def generadorSituaciones():
+    global places
+    diasFaltantes = [30,15,7]
+    asientosComprados = [80,50,10]
+    for place in places:
+        temporadaAlta = place.getSeasonPercentage()[6]
+        temporadaBaja = place.getSeasonPercentage()[10]
+        nombreRuta = place.getName()
+        print("Precios para la ruta: ", nombreRuta)
+        print("Precio en Julio")
+        for dias in diasFaltantes:
+            for asientos in asientosComprados:
+                print(calcularPrecio(asientos,dias,temporadaAlta,nombreRuta))
+        print("____________________________________________________")
+        print("Precio en Noviembre")
+        for dias in diasFaltantes:
+            for asientos in asientosComprados:
+                print(calcularPrecio(asientos,dias,temporadaBaja,nombreRuta))
+        print("____________________________________________________")
+        print("____________________________________________________")
 
-print("Precio en Julio")
-print(calcularPrecio(80, 30, places[0].getSeasonPercentage()[6], "SanJose-Tamarindo"))
-print(calcularPrecio(80, 15, places[0].getSeasonPercentage()[6], "SanJose-Tamarindo"))
-print(calcularPrecio(80, 7, places[0].getSeasonPercentage()[6], "SanJose-Tamarindo"))
 
-print(calcularPrecio(50, 30, places[0].getSeasonPercentage()[6], "SanJose-Tamarindo"))
-print(calcularPrecio(50, 15, places[0].getSeasonPercentage()[6], "SanJose-Tamarindo"))
-print(calcularPrecio(50, 7, places[0].getSeasonPercentage()[6], "SanJose-Tamarindo"))
-
-print(calcularPrecio(10, 30, places[0].getSeasonPercentage()[6], "SanJose-Tamarindo"))
-print(calcularPrecio(10, 15, places[0].getSeasonPercentage()[6], "SanJose-Tamarindo"))
-print(calcularPrecio(10, 7, places[0].getSeasonPercentage()[6], "SanJose-Tamarindo"))
-
-print("____________________________________________________")
-print("Precio en Noviembre")
-
-print(calcularPrecio(80, 30, places[0].getSeasonPercentage()[10], "SanJose-Tamarindo"))
-print(calcularPrecio(80, 15, places[0].getSeasonPercentage()[10], "SanJose-Tamarindo"))
-print(calcularPrecio(80, 7, places[0].getSeasonPercentage()[10], "SanJose-Tamarindo"))
-
-print(calcularPrecio(50, 30, places[0].getSeasonPercentage()[10], "SanJose-Tamarindo"))
-print(calcularPrecio(50, 15, places[0].getSeasonPercentage()[10], "SanJose-Tamarindo"))
-print(calcularPrecio(50, 7, places[0].getSeasonPercentage()[10], "SanJose-Tamarindo"))
-
-print(calcularPrecio(10, 30, places[0].getSeasonPercentage()[10], "SanJose-Tamarindo"))
-print(calcularPrecio(10, 15, places[0].getSeasonPercentage()[10], "SanJose-Tamarindo"))
-print(calcularPrecio(10, 7, places[0].getSeasonPercentage()[10], "SanJose-Tamarindo"))
+generadorSituaciones()

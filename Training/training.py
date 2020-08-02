@@ -7,47 +7,7 @@ from place import *
 from formula import *
 
 
-# CAPACIDAD 100
-def profitPerTotal(pPriceCost, pPrice):
-    return round(((pPrice - pPriceCost) / pPriceCost) * 100, 2)
-
-
-def training(
-    pPriceCost, pProfitPercentage, pPlacePercentage, pSeasonPercentage, pPurchase, pDate
-):
-    percentage = 1
-    price = pPriceCost * (1 + pProfitPercentage)
-    # print("Cant de Compras: " + str(pPurchase) + " Dias Faltantes: " + str(pDate))
-    price = math.ceil(price * ((1 + pSeasonPercentage) * (1 + pPlacePercentage)))
-    # print("Precio sin tiempo y ventas $" + str(price))
-    if 20 > pDate >= 40 and pPurchase >= 75:
-        percentage = 1.45
-    elif 10 < pDate <= 20 and pPurchase >= 75:
-        percentage = 1.35
-    elif pDate <= 10 and pPurchase >= 75:
-        percentage = 0.82
-
-    elif 20 > pDate >= 40 and 25 <= pPurchase < 75:
-        percentage = 1.38
-    elif 10 < pDate <= 20 and 25 <= pPurchase < 75:
-        percentage = 1.28
-    elif pDate <= 10 and 25 <= pPurchase < 75:
-        percentage = 0.78
-
-    elif 20 > pDate >= 40 and pPurchase <= 25:
-        percentage = 0.98
-    elif 10 < pDate <= 20 and pPurchase <= 25:
-        percentage = 0.91
-    elif pDate <= 10 and pPurchase <= 25:
-        percentage = 0.55
-
-    price = math.ceil(price * percentage)
-    # print("Precio: $" + str(price) + " " + str(percentage) + "%")
-    # print("Ganancia:" + str(profitPerTotal(pPriceCost, price)) + "%")
-    # print("____________________________________________________")
-    return price
-
-
+# Datos del porcentaje que afecta las temporadas
 seasonTamarindo = [
     0.1193,
     0.1153,
@@ -118,14 +78,61 @@ seasonFortuna = [
     0.0316,
     0.0938,
 ]
+
+# Se crean los lugares con su ruta, porcentaje de popularidad, precioCosto y
+# la lista del porcentaje de la temporada
 places = []
 places.append(Place("SanJose-Tamarindo", 0.2856, 5500, seasonTamarindo))
-# places.append(Place('SanJose-Liberia', 0.1431, 3500, seasonLiberia))
-# places.append(Place('Tamarindo-San Jose', 0.2856, 4750, seasonSanJose))
-# places.append(Place('SanJose-Monteverde', 0.1429, 4500, seasonMonteverde))
-# places.append(Place('SanJose-Fortuna', 0.1429, 6000, seasonFortuna))
+places.append(Place('SanJose-Liberia', 0.1431, 3500, seasonLiberia))
+places.append(Place('Tamarindo-San Jose', 0.2856, 4750, seasonSanJose))
+places.append(Place('SanJose-Monteverde', 0.1429, 4500, seasonMonteverde))
+places.append(Place('SanJose-Fortuna', 0.1429, 6000, seasonFortuna))
 
+# Saca el porcentaje de ganancia que hubo en cada calculo
+def profitPerTotal(pPriceCost, pPrice):
+    return round(((pPrice - pPriceCost) / pPriceCost) * 100, 2)
 
+# Aplica los porcentajes debidos dependiendo del porcentajeGanancia,
+# porcentajePopularidad, porcentajeTemporada, cantidadCompras y diasRestantes
+# para sacar el precio que se daria en esas condiciones
+def training(
+    pPriceCost, pProfitPercentage, pPlacePercentage, pSeasonPercentage, pPurchase, pDate
+):
+    percentage = 1
+    # Se le aplica el porcentaje que se quiere de ganancia fija
+    price = pPriceCost * (1 + pProfitPercentage)
+    # Se le aplica el porcentaje de aumento segun la temporada y la zona
+    price = math.ceil(price * ((1 + pSeasonPercentage) * (1 + pPlacePercentage)))
+
+    # Dependiendo de las condiciones determina el peso
+    # de la cantidad de dias y cantidad de asientos comprados
+    if 20 > pDate >= 40 and pPurchase >= 75:
+        percentage = 1.45
+    elif 10 < pDate <= 20 and pPurchase >= 75:
+        percentage = 1.35
+    elif pDate <= 10 and pPurchase >= 75:
+        percentage = 0.82
+
+    elif 20 > pDate >= 40 and 25 <= pPurchase < 75:
+        percentage = 1.38
+    elif 10 < pDate <= 20 and 25 <= pPurchase < 75:
+        percentage = 1.28
+    elif pDate <= 10 and 25 <= pPurchase < 75:
+        percentage = 0.78
+
+    elif 20 > pDate >= 40 and pPurchase <= 25:
+        percentage = 0.98
+    elif 10 < pDate <= 20 and pPurchase <= 25:
+        percentage = 0.91
+    elif pDate <= 10 and pPurchase <= 25:
+        percentage = 0.55
+
+    # Se le aplica el porcentaje de dias y comprados
+    price = math.ceil(price * percentage)
+    return price
+
+# Saca los valores para la formula de regresion Lineal de
+# todas las rutas haciendo un muestreo y usando training
 def sacarRegresionLineal():
     global places
     x_multiple = []
@@ -133,12 +140,10 @@ def sacarRegresionLineal():
     listaFormulas = []
 
     for place in places:
-        # print("- - - - - - - -")
-        #  print(place.getName())
-        # print("Lugar: " + str(place.getPlacePercentage()) + "%")
         for season in place.getSeasonPercentage():
+            # Por temporada genera 15 casos para entrenar
             for i in range(0, 15):
-                # print("Temporada: " + str(season) + "%")
+                # Dias y compras se generan aleatorios
                 purchase = random.randint(1, 100)
                 date = random.randint(1, 35)
                 price = training(
@@ -149,10 +154,12 @@ def sacarRegresionLineal():
                     purchase,
                     date,
                 )
-                # x_multiple.append([purchase, date, place.getPlacePercentage(), season])
+                # Se añaden los x de la regresion lineal
                 x_multiple.append([purchase, date, season])
+                # Se añaden el y de la regresion lineal
                 y_multiple.append(price)
 
+        # Prepara los datos para sacar la formula
         X_train, X_test, y_train, y_test = train_test_split(
             x_multiple, y_multiple, test_size=0.2
         )
@@ -162,39 +169,32 @@ def sacarRegresionLineal():
         lr_multiple.fit(X_train, y_train)
         # Realizo una prediccion
         y_pred_multiple = lr_multiple.predict(X_test)
-        # print(X_train, X_test, y_train, y_test)
-        # print(X_test)
-        # print(y_train)
-        # print(y_test)
-        # print(y_pred_multiple)
 
-        # print("Datos del modelo de Regresion Lineal Multiple")
-        # print('Valor de las pendientes o coeficientes "a":')
-        # print(lr_multiple.coef_)
+        # Se castean los datos de los coeficientesA y se meten
+        # en una lista
         coeficientesA = []
         for coeficienteA in lr_multiple.coef_:
             coeficientesA.append(float(coeficienteA))
-        # print(coeficientesA)
 
-        # print('Valord de la interseccion o coeficiente b:')
+        # Se saca el valor del coeficienteB
         coeficienteB = lr_multiple.intercept_
-        # print(lr_multiple.intercept_)
-        # print("Precision del Modelo:")
-        # print(lr_multiple.score(X_train, y_train))
-        # print("Precios:")
 
+        # Se crea la formula para esa ruta
         formula = Formula(place.name, coeficientesA, coeficienteB)
         listaFormulas.append(formula)
 
+        # Se resetea el la lista de 'xs' y 'y' para el proximo lugar
         x_multiple = []
         y_multiple = []
 
     return listaFormulas
 
-
+# Calcula el precio de un asiento dependiendo de las situacion
+# aplicando la formula de la ruta en especifico
 def calcularPrecio(asientos, dias, temporada, ruta):
     listaFormulas = sacarRegresionLineal()
 
+    # Le aplica la formula de la ruta respectiva
     for formula in listaFormulas:
         if formula.ruta == ruta:
             return math.ceil(

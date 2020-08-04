@@ -10,27 +10,26 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.FloatWritable;
 
+public class StartJobMain extends Configured implements Tool {
 
-public class StartJobMain extends Configured implements Tool { 
-	
-	public static void main(String[] args) throws Exception {	    
+	public static void main(String[] args) throws Exception {
 		int res = ToolRunner.run(new StartJobMain(), args);
-	    System.exit(res);
+		System.exit(res);
 	}
 
 	public int run(String[] args) throws Exception {
-	    Job job = new Job(getConf(), "sumar ventas por anno");
-	    job.setJarByClass(this.getClass());
-	    
-	    System.out.println(args[0]);
-	    // Use TextInputFormat, the default unless job.setInputFormatClass is used
-	    FileInputFormat.addInputPath(job, new Path(args[0]));
-	    FileOutputFormat.setOutputPath(job, new Path("/user/cloudera/yearsales/"));
-	    job.setMapperClass(ElMaper.class);
-	    job.setReducerClass(ElReducer.class);
-	    job.setOutputKeyClass(IntWritable.class);
-	    job.setOutputValueClass(FloatWritable.class);
-	    return job.waitForCompletion(true) ? 0 : 1;
+		Job job = new Job(getConf(), "sumar ventas por anno");
+		job.setJarByClass(this.getClass());
+
+		System.out.println(args[0]);
+		// Use TextInputFormat, the default unless job.setInputFormatClass is used
+		FileInputFormat.addInputPath(job, new Path(args[0]));
+		FileOutputFormat.setOutputPath(job, new Path("/user/cloudera/yearsales/"));
+		job.setJarByClass(ElMaper.class);
+		job.setReducerClass(ElReducer.class);
+		job.setOutputKeyClass(IntWritable.class);
+		job.setOutputValueClass(FloatWritable.class);
+		return job.waitForCompletion(true) ? 0 : 1;
 	}
 
 }

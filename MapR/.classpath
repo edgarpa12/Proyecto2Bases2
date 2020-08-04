@@ -6,8 +6,8 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="hadoop-core-1.1.2.jar"/>
-	<classpathentry kind="lib" path="/Users/stevenquesada/Downloads/MapR/sqljdbc4-2.0.jar"/>
-	<classpathentry kind="lib" path="/Users/stevenquesada/Downloads/MapR/hive-hcatalog-core-3.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kendall/Documents/TEC/Proyecto Bases II/Proyecto2Bases2/MapR/hadoop-core-1.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kendall/Documents/TEC/Proyecto Bases II/Proyecto2Bases2/MapR/hive-hcatalog-core-3.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kendall/Documents/TEC/Proyecto Bases II/Proyecto2Bases2/MapR/sqljdbc4-2.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

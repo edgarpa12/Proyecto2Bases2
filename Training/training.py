@@ -82,11 +82,26 @@ seasonFortuna = [
 # Se crean los lugares con su ruta, porcentaje de popularidad, precioCosto y
 # la lista del porcentaje de la temporada
 places = []
-places.append(Place("SanJose-Tamarindo", 0.2856, 5500, seasonTamarindo))
-places.append(Place('SanJose-Liberia', 0.1431, 3500, seasonLiberia))
+places.append(Place('Liberia-San Jose', 0.2856, 3000, seasonSanJose))
+places.append(Place('San Jose-Liberia', 0.1431, 3500, seasonLiberia))
+
+places.append(Place("San Jose-Tamarindo", 0.2856, 5500, seasonTamarindo))
 places.append(Place('Tamarindo-San Jose', 0.2856, 4750, seasonSanJose))
-places.append(Place('SanJose-Monteverde', 0.1429, 4500, seasonMonteverde))
-places.append(Place('SanJose-Fortuna', 0.1429, 6000, seasonFortuna))
+
+places.append(Place('San Jose-Monteverde', 0.1429, 4500, seasonMonteverde))
+places.append(Place('Monteverde-San Jose', 0.2856, 4500, seasonSanJose))
+
+places.append(Place('San Jose-Fortuna', 0.1429, 6000, seasonFortuna))
+places.append(Place('Fortuna-San Jose', 0.2856, 5500, seasonSanJose))
+
+places.append(Place('Fortuna-Tamarindo', 0.2856, 2800, seasonTamarindo))
+places.append(Place('Tamarindo-Fortuna', 0.1429, 3500, seasonFortuna))
+
+places.append(Place('Monteverde-Tamarindo', 0.2856, 2000, seasonTamarindo))
+places.append(Place('Tamarindo-Monteverde', 0.1429, 2800, seasonMonteverde))
+
+places.append(Place('Liberia-Tamarindo', 0.2856, 1500, seasonTamarindo))
+places.append(Place('San Jose-Liberia', 0.1431, 1250, seasonLiberia))
 
 # Saca el porcentaje de ganancia que hubo en cada calculo
 def profitPerTotal(pPriceCost, pPrice):
@@ -142,7 +157,7 @@ def sacarRegresionLineal():
     for place in places:
         for season in place.getSeasonPercentage():
             # Por temporada genera 15 casos para entrenar
-            for i in range(0, 15):
+            for i in range(0, 20):
                 # Dias y compras se generan aleatorios
                 purchase = random.randint(1, 100)
                 date = random.randint(1, 35)
@@ -214,20 +229,17 @@ def generadorSituaciones():
     diasFaltantes = [30,15,7]
     asientosComprados = [80,50,10]
     for place in places:
-        temporadaAlta = place.getSeasonPercentage()[6]
-        temporadaBaja = place.getSeasonPercentage()[10]
-        nombreRuta = place.getName()
-        print("Precios para la ruta: ", nombreRuta)
-        print("Precio en Julio")
-        for dias in diasFaltantes:
-            for asientos in asientosComprados:
-                print(calcularPrecio(asientos,dias,temporadaAlta,nombreRuta))
-        print("____________________________________________________")
-        print("Precio en Noviembre")
-        for dias in diasFaltantes:
-            for asientos in asientosComprados:
-                print(calcularPrecio(asientos,dias,temporadaBaja,nombreRuta))
-        print("____________________________________________________")
+        meses = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octube","Noviembre","Diciembre"]
+        for mes in range(12):
+            temporada = place.getSeasonPercentage()[mes]
+            nombreRuta = place.getName()
+            precioBase = place.getCostPrice()*2
+            print("Precios para la ruta: ", nombreRuta, "Precio Base: ", precioBase)
+            print("Precio en ",meses[mes])
+            for dias in diasFaltantes:
+                for asientos in asientosComprados:
+                    print(calcularPrecio(asientos,dias,temporada,nombreRuta))
+            print("____________________________________________________")
         print("____________________________________________________")
 
 

@@ -6,6 +6,8 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/Kendall/Documents/TEC/MapR/hadoop-core-1.1.2.jar"/>
+	<classpathentry kind="lib" path="hadoop-core-1.1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/edgarpa12/OneDrive - Estudiantes ITCR/TEC/Semestre 5/Bases de Datos 2/Proyecto2/Proyecto2Bases2/MapR/hadoop-core-1.1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/edgarpa12/OneDrive - Estudiantes ITCR/TEC/Semestre 5/Bases de Datos 2/Proyecto2/Proyecto2Bases2/MapR/hive-hcatalog-core-3.1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

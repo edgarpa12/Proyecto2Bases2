@@ -68,7 +68,11 @@ public class ElMaper extends Mapper<LongWritable, Text, Text, FloatWritable> {
 		String dayS = Integer.toString(day);
 		
 		
+<<<<<<< HEAD
 		String together = yearS+'\t'+month+'\t'+dayS+'\t'+destination;
+=======
+		String together = yearS + '\t' + month + '\t' + monthPartS + '\t' + destination;
+>>>>>>> develop
 		FloatWritable sale = new FloatWritable(Float.parseFloat(fields[1]));
 		
 		context.write(new Text(together), sale);

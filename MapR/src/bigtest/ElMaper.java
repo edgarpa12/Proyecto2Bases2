@@ -29,12 +29,13 @@ public class ElMaper extends Mapper<LongWritable, Text, Text, FloatWritable> {
 		
 		int year = 0;
 		int month = 0;
+		int day = 0;
 		
-		double daysPerPart = 0.0;
-		
-		double daysCount = 0.0;
-		
-		int monthPart = 0;
+//		double daysPerPart = 0.0;
+//		
+//		double daysCount = 0.0;
+//		
+//		int monthPart = 0;
 		
 		try {
 			Date parse = sdf.parse(date);
@@ -47,13 +48,15 @@ public class ElMaper extends Mapper<LongWritable, Text, Text, FloatWritable> {
 			
 			month = (cal.get(Calendar.MONTH) + 1);
 			
+			day = cal.get(Calendar.DAY_OF_MONTH);
 			
-			daysCount = (new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),
-					cal.get(Calendar.DAY_OF_MONTH))).getActualMaximum(Calendar.DAY_OF_MONTH);
 			
-			daysPerPart = (daysCount + 1) / 4;
+//			daysCount = (new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),
+//					cal.get(Calendar.DAY_OF_MONTH))).getActualMaximum(Calendar.DAY_OF_MONTH);
 			
-			monthPart = (int) Math.floor(cal.get(Calendar.DAY_OF_MONTH) / daysPerPart);
+//			daysPerPart = (daysCount + 1) / 4;
+			
+//			monthPart = (int) Math.floor(cal.get(Calendar.DAY_OF_MONTH) / daysPerPart);
 			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -62,10 +65,10 @@ public class ElMaper extends Mapper<LongWritable, Text, Text, FloatWritable> {
 		
 		String yearS = Integer.toString(year);
 		String monthS = Integer.toString(month);
-		String monthPartS = Integer.toString(monthPart);
+		String dayS = Integer.toString(day);
 		
 		
-		String together = yearS+' '+month+' '+monthPartS+' '+destination;
+		String together = yearS+'\t'+month+'\t'+dayS+'\t'+destination;
 		FloatWritable sale = new FloatWritable(Float.parseFloat(fields[1]));
 		
 		context.write(new Text(together), sale);

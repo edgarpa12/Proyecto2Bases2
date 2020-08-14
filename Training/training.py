@@ -1,5 +1,8 @@
 import random
 import math
+import json
+import sys
+
 from sklearn import linear_model
 from sklearn.model_selection import train_test_split
 
@@ -238,9 +241,8 @@ def generadorSituaciones():
             print("Precio en ",meses[mes])
             for dias in diasFaltantes:
                 for asientos in asientosComprados:
-                    print(calcularPrecio(asientos,dias,temporada,nombreRuta))
+                    sys.stdout.write(calcularPrecio(asientos,dias,temporada,nombreRuta))
             print("____________________________________________________")
         print("____________________________________________________")
-
 
 generadorSituaciones()

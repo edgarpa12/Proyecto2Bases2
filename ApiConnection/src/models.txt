@@ -1,0 +1,63 @@
+Tabla tasa de crecimiento de busquedas N días atrás 
+(1 semana)
+Destino
+Fecha
+Cantidad busquedas
+Tasa => (busquedas hoy - busquedas ayer) / busquedas ayer
+
+Tabla de Tasa de Crecimiento de las compras por cada 100 busquedas
+Destino
+Fecha
+Porcentaje compra (compras / busquedas totales)
+Tasa (porcentaje compra hoy - porcentaje compra ayer) / porcentaje compra ayer
+
+Tabla de Cantidad de Compras para los proximos 6 Meses
+Origen
+Destino
+FechaDelViaje
+Cantidad
+
+Tabla de Historico 6 Meses Hacia Adelante desde atras
+Destino
+Cantidad compras
+Fecha
+
+
+/////// tables
+
+
+CREATE TABLE crecimientoBusquedas (
+  destino text NOT NULL,
+  fecha date NOT NULL,
+  cantidad int NOT NULL,
+  tasa float NOT NULL
+);
+
+CREATE TABLE crecimientoCompras (
+  destino text NOT NULL,
+  fecha date NOT NULL,
+  porcentajeCompra float NOT NULL,
+  tasa float NOT NULL
+);
+
+0,06  0,05      0,07    0,09
+      -0,1666   0,4     0,2857
+
+CREATE TABLE cantidadCompras (
+  origen text NOT NULL,
+  destino text NOT NULL,
+  fechaViaje date NOT NULL,
+  cantidad int NOT NULL
+);
+
+CREATE TABLE historico (
+  destino text NOT NULL,
+  cantidad int NOT NULL,
+  fecha date NOT NULL
+);
+
+CREATE TABLE precios (
+  origen text NOT NULL,
+  destino text NOT NULL,
+  precio float NOT NULL
+);

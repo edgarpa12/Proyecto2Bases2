@@ -1,0 +1,37 @@
+Bitacora Steven Quesada - Create an ingest pipeline from Kafka: https://youtu.be/_scadOlIUSE
+
+MemSQL
+
+docker pull memsql/quickstart
+
+
+//
+docker-compose up
+docker-compose down
+
+
+// License key MemSQL
+BGU5OTM4NzUyNzJkMjQxOTE4YTJiOWU3MzA4YmVlZDY1AAAAAAAAAAAEAAAAAAAAAAwwNAIYQe+n+i2j0SaNg46afD8VuUOu8NO23nn+Ahhi5E6rJ4WBFuHgjKEOXBu0hzikecT0kikAAA==
+
+// localhost:8080
+// user : root
+// password :
+
+// cluster in web AWS
+// user: admin
+//password: Sqj161198
+
+
+// db example
+
+CREATE DATABASE hellomemsql;
+
+USE hellomemsql;
+
+CREATE TABLE test (
+  message text NOT NULL
+);
+
+INSERT INTO test (message) VALUES ('this is a sample message');
+ 
+SELECT * FROM test;

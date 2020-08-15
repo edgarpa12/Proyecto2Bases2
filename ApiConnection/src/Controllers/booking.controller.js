@@ -30,10 +30,11 @@ async function executeQuery(connection, sqlFunction) {
   });
 }
 
-function getPrice (origen, destino, fechaDeseada, fechaHoy) {
-  new Promise((resolve,reject) =>{
+async function getPrice (origen, destino, fechaDeseada, fechaHoy) {
+  return new Promise((resolve,reject) =>{
   pool.getConnection(async function (err, conn) {
     if (err) {
+      conn.release();
       reject(err);
     };
 
@@ -130,27 +131,32 @@ function getPrice (origen, destino, fechaDeseada, fechaHoy) {
     console.log("Precio Final", precioFinal);
     console.log(fechaHoy, fechaDeseada, origen, destino);
 
-    resolve( precioFinal);
+    resolve(precioFinal);
   })});
 }
 class bookingController {
-  search =  (req, res) => {
+  search = async (req, res) => {
     const { origen, destino, fechaDeseada, fechaHoy } = req.body;
     const promisePrecio =  getPrice(origen, destino, fechaDeseada, fechaHoy);
     
     let precioFinal = await promisePrecio.catch((err) =>
       res.status(400).send("Couldn't get a connection")
     );
+
     res.json({precioFinal: precioFinal})
     const topic = 'searches'
-    sendkafka(fechaHoy, fechaDeseada, origen, destino, topic);
+    sendkafka(fechaHoy, fechaDeseada, origen, destino,precioFinal, topic);
   };
-  book = (req, res) => {
+  book = async (req, res) => {
     const { origen, destino, fechaDeseada, fechaHoy } = req.body;
-    let precioFinal = getPrice(origen, destino, fechaDeseada, fechaHoy)
+    const promisePrecio =  getPrice(origen, destino, fechaDeseada, fechaHoy);
+    
+    let precioFinal = await promisePrecio.catch((err) =>
+      res.status(400).send("Couldn't get a connection")
+    );
     const topic = 'bookings'
     res.json({precioFinal: precioFinal})
-    sendkafka(fechaHoy, fechaDeseada, origen, destino, topic);
+    sendkafka(fechaHoy, fechaDeseada, origen, destino,precioFinal, topic);
   };
 }
 

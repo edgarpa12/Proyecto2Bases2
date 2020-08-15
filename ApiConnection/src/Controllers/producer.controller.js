@@ -8,11 +8,11 @@ try {
     const client = new kafka.KafkaClient({kafkaHost: config.kafka_serverC});
     const producer = new Producer(client);
 
-    function sendkafka(fechaHoy, fechaDeseada, origen, destino, topic) {
+    function sendkafka(fechaHoy, fechaDeseada, origen, destino, precioFinal,topic) {
         let payloads = [
             {
               topic: topic,
-              messages: fechaHoy + "," + fechaDeseada + "," + origen + "," + destino
+              messages: fechaHoy + "," + fechaDeseada + "," + origen + "," + destino + "," + precioFinal
             }
           ];
         let push_status = producer.send(payloads, (err, data) => {

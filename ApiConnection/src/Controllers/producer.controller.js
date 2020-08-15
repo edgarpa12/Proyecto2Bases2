@@ -23,8 +23,8 @@ try {
             }
         });
     }
-  }
-  catch(e) {
+}
+catch(e) {
     console.log(e);
 }
 module.exports = sendkafka;

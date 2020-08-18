@@ -1,5 +1,5 @@
 const mysql = require("mysql");
-const { restDates, subtractYear, subtractDays } = require("../Misc/misc");
+const { restDates, subtractMonths, subtractDays } = require("../Misc/misc");
 const { acumulada, crecimientoCompras } = require("./predict.controller");
 const sendkafka = require('./producer.controller')
 var pool = mysql.createPool({
@@ -68,9 +68,9 @@ async function getPrice (origen, destino, fechaDeseada, fechaHoy) {
     //Promise que trae los precios historicos desde la fecha actual hasta la deseada de años anteriores.
     const promiseHistorico = executeQuery(
       conn,
-      `SELECT * FROM historico where destino = "${destino}" and fecha between "${subtractYear(
+      `SELECT * FROM historico where destino = "${destino}" and fecha between "${subtractMonths(
         fechaHoy
-      )}" and "${subtractYear(fechaDeseada)}"ORDER BY Date(fecha) ASC`
+      )}" and "${subtractMonths(fechaDeseada)}"ORDER BY Date(fecha) ASC`
     );
 
     let historicos = await promiseHistorico.catch((err) =>

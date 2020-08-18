@@ -3,9 +3,6 @@ const path = require('path');
 
 const app = express();
 
-// Db connection
-const { mysql } = require('./index');
-
 // Settings 
 app.set('port', process.env.PORT || 3000);
 
@@ -14,6 +11,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/booking', require('./routes/bookings.routes'));
+app.use('/api/simulation', require('./routes/simulation.routes'));
 
 
 // Starting the server

@@ -9,18 +9,55 @@ function restDates(f1, f2) {
   var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
 
   //To display the final no. of days (result)
-  return Difference_In_Days
+  return Difference_In_Days;
 }
 
-function subtractYear(date) {
+function subtractMonths(date, months) {
   const parsedDate = new Date(date);
-  parsedDate.setMonth(parsedDate.getMonth() - 12);
+  parsedDate.setMonth(parsedDate.getMonth() - months);
   return parsedDate.toISOString().slice(0, 10);
 }
 
 function subtractDays(date, days) {
   const parsedDate = new Date(date);
+  if (parsedDate.getDate() - days < 0) {
+    subtractMonths(parsedDate, 1);
+  }
   parsedDate.setDate(parsedDate.getDate() - days);
   return parsedDate.toISOString().slice(0, 10);
 }
-module.exports = {restDates:restDates,subtractDays:subtractDays,subtractYear:subtractYear};
+function increaseDays(date, days) {
+  const parsedDate = new Date(date);
+  parsedDate.setDate(parsedDate.getDate() + days);
+  return parsedDate.toISOString().slice(0, 10);
+}
+
+function randomInt(low, high) {
+  return Math.floor(Math.random() * (high - low) + low);
+}
+function getRandom(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+function getWeekDay(date) {
+  var date = new Date(date);
+  var weekdays = [
+    "Lunes",
+    "Martes",
+    "Miercoles",
+    "Jueves",
+    "Viernes",
+    "Sabado",
+    "Domingo",
+  ];
+  return weekdays[date.getDay()];
+}
+module.exports = {
+  restDates: restDates,
+  subtractDays: subtractDays,
+  subtractMonths: subtractMonths,
+  increaseDays: increaseDays,
+  randomInt: randomInt,
+  getWeekDay: getWeekDay,
+  getRandom:getRandom
+};
